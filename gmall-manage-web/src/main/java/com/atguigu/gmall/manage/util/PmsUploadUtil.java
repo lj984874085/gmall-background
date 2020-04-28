@@ -1,25 +1,24 @@
 package com.atguigu.gmall.manage.util;
 
-import org.csource.common.MyException;
+import java.io.IOException;
+
 import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 public class PmsUploadUtil {
 
-
+	
     public static String uploadImage(MultipartFile multipartFile) {
 
-        String imgUrl =  "http://192.168.222.20";
+        String imgUrl = ManageWebConstant.imgUrl;
 
         // 上传图片到服务器
         // 配置fdfs的全局链接地址
         String tracker = PmsUploadUtil.class.getResource("/tracker.conf").getPath();// 获得配置文件的路径
-
+        System.out.println("tracker:"+tracker);
         try {
             ClientGlobal.init(tracker);
         } catch (Exception e) {
@@ -52,7 +51,7 @@ public class PmsUploadUtil {
             String[] uploadInfos = storageClient.upload_file(bytes, extName, null);
 
             for (String uploadInfo : uploadInfos) {
-                imgUrl += "/"+uploadInfo;
+            	imgUrl += "/"+uploadInfo;
             }
         } catch (Exception e) {
             e.printStackTrace();
